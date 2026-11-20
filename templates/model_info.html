@@ -1,0 +1,187 @@
+{% extends "base.html" %} {% set active_page = "model_info" %} {% block title
+%}SIMOLUSKA — Model info{% endblock %} {% block page_icon %}ti-chart-bar{%
+endblock %} {% block page_title %}Model Info{% endblock %} {% block
+page_subtitle %}Detail dan performa model yang digunakan dalam sistem
+klasifikasi.{% endblock %} {% block content %}
+<!-- Metrik Kinerja -->
+<div class="row g-3 mb-4">
+ <div class="col-sm-6 col-xl">
+  <div class="card lift mb-0 metric">
+   <span class="tile tile-brand"><i class="ti ti-target"></i></span>
+   <div>
+    <div class="val">{{ klasifikasi.accuracy_pct }}%</div>
+    <div class="lbl">Accuracy</div>
+   </div>
+  </div>
+ </div>
+ <div class="col-sm-6 col-xl">
+  <div class="card lift mb-0 metric">
+   <span class="tile tile-violet"><i class="ti ti-crosshair"></i></span>
+   <div>
+    <div class="val">{{ klasifikasi.precision_pct }}%</div>
+    <div class="lbl">Precision (rata-rata)</div>
+   </div>
+  </div>
+ </div>
+ <div class="col-sm-6 col-xl">
+  <div class="card lift mb-0 metric">
+   <span class="tile tile-sky"><i class="ti ti-circle-check"></i></span>
+   <div>
+    <div class="val">{{ klasifikasi.recall_pct }}%</div>
+    <div class="lbl">Recall (rata-rata)</div>
+   </div>
+  </div>
+ </div>
+ <div class="col-sm-6 col-xl">
+  <div class="card lift mb-0 metric">
+   <span class="tile tile-green"><i class="ti ti-chart-line"></i></span>
+   <div>
+    <div class="val">{{ klasifikasi.f1_pct }}%</div>
+    <div class="lbl">F1-Score (rata-rata)</div>
+   </div>
+  </div>
+ </div>
+ <div class="col-sm-6 col-xl">
+  <div class="card lift mb-0 metric">
+   <span class="tile tile-rose"><i class="ti ti-hash"></i></span>
+   <div>
+    <div class="val">{{ klasifikasi.best_epoch.epoch }}</div>
+    <div class="lbl">Best Epoch</div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- Informasi Model & Best Epoch -->
+<div class="row g-3 mb-1">
+ <div class="col-lg-6">
+  <div class="card">
+   <div class="card-header">
+    <i class="ti ti-id"></i>
+    <h5>Informasi Model</h5>
+   </div>
+   <div class="card-body">
+    <div class="info-row">
+     <span>Nama Model</span><span>{{ klasifikasi.nama_model }}</span>
+    </div>
+    <div class="info-row">
+     <span>Framework</span><span>{{ klasifikasi.framework }}</span>
+    </div>
+    <div class="info-row">
+     <span>Preprocessing</span><span>{{ klasifikasi.preprocessing }}</span>
+    </div>
+    <div class="info-row">
+     <span>Input Size</span><span>{{ klasifikasi.input_size }}</span>
+    </div>
+    <div class="info-row">
+     <span>Total / Trainable Parameter</span
+     ><span>{{ klasifikasi.total_params }} / {{ klasifikasi.trainable }}</span>
+    </div>
+    <div class="info-row">
+     <span>Jumlah Kelas</span><span>{{ klasifikasi.jumlah_kelas }} kelas</span>
+    </div>
+   </div>
+  </div>
+ </div>
+ <div class="col-lg-6">
+  <div class="card">
+   <div class="card-header">
+    <i class="ti ti-adjustments-horizontal"></i>
+    <h5>Best Epoch</h5>
+   </div>
+   <div class="card-body">
+    <div class="info-row">
+     <span>Epoch</span><span>{{ klasifikasi.best_epoch.epoch }}</span>
+    </div>
+    <div class="info-row">
+     <span>Train Accuracy</span
+     ><span>{{ (klasifikasi.best_epoch.train_accuracy * 100)|round(2) }}%</span>
+    </div>
+    <div class="info-row">
+     <span>Train Loss</span><span>{{ klasifikasi.best_epoch.train_loss }}</span>
+    </div>
+    <div class="info-row">
+     <span>Val Accuracy</span
+     ><span>{{ (klasifikasi.best_epoch.val_accuracy * 100)|round(2) }}%</span>
+    </div>
+    <div class="info-row">
+     <span>Val Loss</span><span>{{ klasifikasi.best_epoch.val_loss }}</span>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- Grafik Training -->
+<div class="row g-3 mb-1">
+ <div class="col-12">
+  <div class="card">
+   <div class="card-header">
+    <i class="ti ti-chart-line"></i>
+    <h5>Grafik Training</h5>
+   </div>
+   <div class="card-body">
+    <img
+     src="{{ url_for('static', filename='img/accuracyLoss_training.png') }}"
+     alt="Grafik loss dan accuracy training"
+     class="img-fluid w-100 frame-img"
+    />
+   </div>
+  </div>
+ </div>
+</div>
+
+<!-- Kelas, Confusion Matrix & Performa -->
+<div class="row g-3">
+ <div class="col-lg-6">
+  <div class="card">
+   <div class="card-header">
+    <i class="ti ti-checklist"></i>
+    <h5>Confusion Matrix</h5>
+   </div>
+   <div class="card-body">
+    <img
+     src="{{ url_for('static', filename='img/confusionMatrix_klasifikasi.png') }}"
+     alt="Confusion matrix"
+     class="img-fluid d-block mx-auto mt-4 frame-img"
+     style="max-width: 500px"
+    />
+   </div>
+  </div>
+ </div>
+ <div class="col-lg-6">
+  <div class="card">
+   <div class="card-header">
+    <i class="ti ti-report-analytics"></i>
+    <h5>Performa per Kelas</h5>
+   </div>
+   <div class="card-body">
+    <div class="table-responsive">
+     <table class="table table-sm table-hover feature-table mb-0">
+      <thead>
+       <tr>
+        <th>Kelas</th>
+        <th class="text-end">Precision</th>
+        <th class="text-end">Recall</th>
+        <th class="text-end">F1</th>
+        <th class="text-end">Data uji</th>
+       </tr>
+      </thead>
+      <tbody>
+       {% for nama, val in klasifikasi.classes.items() %}
+       <tr>
+        <td>{{ nama }}</td>
+        <td class="num">{{ (val.precision * 100)|round(2) }}%</td>
+        <td class="num">{{ (val.recall * 100)|round(2) }}%</td>
+        <td class="num">{{ (val.f1 * 100)|round(2) }}%</td>
+        <td class="num">{{ val.support }}</td>
+       </tr>
+       {% endfor %}
+      </tbody>
+     </table>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock %}

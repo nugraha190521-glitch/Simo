@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% set active_page = "beranda" %} {% block title
+%}SIMOLUSKA — Beranda{% endblock %} {% block page_icon %}ti-home{% endblock %}
+{% block page_title %}Beranda{% endblock %} {% block page_subtitle %}Klasifikasi
+jenis moluska dari foto.{% endblock %} {% block content %}
+<!-- Hero -->
+<section class="hero">
+ <div class="row align-items-center g-4">
+  <div class="col-lg-7 position-relative" style="z-index: 1">
+   <h1>Kenali jenis moluska hanya dari fotonya</h1>
+   <p>
+    Background foto dihapus otomatis dengan <strong>BiRefNet</strong>, lalu
+    <strong>MobileNetV2</strong>
+    mengklasifikasikan objeknya ke salah satu dari {{ daftar_kelas|length }}
+    jenis moluska.
+   </p>
+  </div>
+  <div class="col-lg-5">
+   <div class="hero-panel">
+    <h6>Jenis yang dikenali</h6>
+    <ul>
+     {% for kelas in daftar_kelas %}
+     <li>{{ kelas }}</li>
+     {% endfor %}
+    </ul>
+   </div>
+  </div>
+ </div>
+
+ <div class="mt-4 position-relative" style="z-index: 1">
+  <a href="{{ url_for('klasifikasi') }}" class="btn btn-light-hero btn-lg">
+   <i class="ti ti-scan me-1"></i> Mulai Klasifikasi
+  </a>
+ </div>
+</section>
+{% endblock %}

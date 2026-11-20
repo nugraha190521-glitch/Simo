@@ -1,0 +1,103 @@
+{% extends "base.html" %} {% set active_page = "klasifikasi" %} {% block title
+%}SIMOLUSKA - Klasifikasi{% endblock %} {% block page_icon %}ti-photo{% endblock
+%} {% block page_title %}Klasifikasi{% endblock %} {% block page_subtitle
+%}Unggah foto moluska untuk mendapatkan hasil klasifikasi.{% endblock %} {%
+block content %}
+<div class="row">
+ <!-- Input Gambar -->
+ <div class="col-lg-6">
+  <div class="card">
+   <div class="card-header">
+    <i class="ti ti-upload"></i>
+    <h5>Input Gambar</h5>
+   </div>
+   <div class="card-body">
+    <label id="uploadArea" class="dropzone">
+     <input
+      type="file"
+      id="fileInput"
+      accept="image/*"
+      class="position-absolute top-0 start-0 w-100 h-100 opacity-0"
+      style="cursor: pointer"
+     />
+     <span class="icon-circle"><i class="ti ti-cloud-upload"></i></span>
+     <span class="fw-semibold">Klik atau drag &amp; drop gambar</span>
+     <small class="text-muted">PNG, JPG, JPEG · maks. 10MB</small>
+    </label>
+
+    <div id="previewWrap" class="d-none">
+     <div class="preview-frame">
+      <img id="previewImg" src="" alt="Preview" />
+     </div>
+     <div id="previewMeta" class="small text-muted mt-2"></div>
+     <button id="btnReset" class="btn btn-reset mt-3">
+      <i class="ti ti-x"></i> Hapus gambar
+     </button>
+    </div>
+
+    <button id="btnClassify" class="btn btn-brand w-100 mt-4" disabled>
+     <i class="ti ti-bolt me-1"></i> Klasifikasi Sekarang
+    </button>
+
+    <div class="note mt-4">
+     <i class="ti ti-info-circle fs-5"></i
+     ><span
+      >Pastikan foto menampilkan <strong>satu moluska</strong> dengan jelas.
+      Background dihapus otomatis.</span
+     >
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <!-- Hasil Klasifikasi -->
+ <div class="col-lg-6">
+  <div class="card">
+   <div class="card-header">
+    <i class="ti ti-chart-dots"></i>
+    <h5>Hasil Klasifikasi</h5>
+   </div>
+   <div class="card-body">
+    <div id="resultPlaceholder" class="result-empty">
+     <div class="icon-circle"><i class="ti ti-photo"></i></div>
+     <p class="mb-0 small">Hasil prediksi akan muncul di sini</p>
+    </div>
+
+    <div id="spinner" class="text-center py-5 d-none">
+     <div
+      class="spinner-border"
+      style="color: var(--brand)"
+      role="status"
+     ></div>
+    </div>
+
+    <div id="resultWrap" class="d-none">
+     <div class="result-img">
+      <img id="resultImg" src="" alt="Gambar setelah background dihapus" />
+      <span id="resultImgLabel" class="tag">inference</span>
+     </div>
+
+     <div id="topPred" class="top-pred">
+      <span id="topLabel" class="label">—</span>
+      <span id="topConf" class="conf">—</span>
+     </div>
+
+     <div id="lowConfNotice" class="alert alert-warning d-none mt-3 mb-0">
+      <i class="ti ti-alert-triangle"></i> Keyakinan model rendah. Pastikan foto
+      menampilkan satu moluska dengan jelas, lalu coba lagi.
+     </div>
+
+     <div id="notMolluscNotice" class="alert alert-danger d-none mt-3 mb-0">
+      <i class="ti ti-ban"></i> Gambar ini tidak dikenali. Pastikan foto
+      menampilkan satu moluska dengan jelas, lalu coba lagi.
+     </div>
+
+     <div id="probList" class="mt-4"></div>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+{% endblock %} {% block scripts %}
+<script src="{{ url_for('static', filename='js/klasifikasi.js') }}"></script>
+{% endblock %}
